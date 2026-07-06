@@ -1,22 +1,165 @@
-async function sendMessage(message) {
-    // Correct Endpoint: Use /run or /run_sse at the base URL
-    const response = await fetch(`${BACKEND_URL}/run`, {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({
-            app_name: APP_NAME,
-            user_id: USER_ID,
-            session_id: SESSION_ID,
-            input: message // Provide your user query here
-        })
-    });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathos — Introspective AI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Custom smooth scroll and scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; border-radius: 99px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+        
+        /* Ambient Background Glow */
+        .glow-bg {
+            position: fixed;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(63,63,70,0.15) 0%, rgba(9,9,11,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(40px);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-300 font-sans min-h-screen flex flex-col justify-between selection:bg-zinc-800 selection:text-zinc-100 antialiased">
 
-    if (!response.ok) {
-        throw new Error(`Server returned status: ${response.status}`);
-    }
+    <!-- Ambient Light effect -->
+    <div class="glow-bg"></div>
 
-    const data = await response.json();
-    return data;
-}
+    <!-- Brand Header -->
+    <header class="max-w-2xl w-full mx-auto px-6 pt-16 text-center z-10">
+        <!-- Monospace System Badge -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/60 backdrop-blur-md text-[11px] font-mono tracking-wider text-zinc-400 uppercase mb-4 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Pathos Core v1.0 // Online
+        </div>
+        
+        <h1 class="text-4xl font-light tracking-tight text-white mb-2 font-sans">
+            Pathos
+        </h1>
+        <p class="text-sm text-zinc-400 max-w-sm mx-auto font-normal leading-relaxed">
+            An introspective companion designed to guide thought and clarify ideas through reflective dialogue.
+        </p>
+    </header>
+
+    <!-- Main Chat Glass Container -->
+    <main class="flex-1 max-w-2xl w-full mx-auto p-4 flex flex-col justify-end overflow-hidden h-[55vh] z-10">
+        <div id="chat-box" class="w-full flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar mb-2 p-4 rounded-2xl border border-zinc-900 bg-zinc-900/20 backdrop-blur-md shadow-2xl shadow-black/40">
+            <!-- Initial Welcome Message -->
+            <div class="flex items-start">
+                <div class="bg-zinc-900/80 border border-zinc-800/80 text-zinc-200 px-4 py-3 rounded-2xl rounded-tl-none max-w-[85%] text-[14px] leading-relaxed shadow-md">
+                    Hello. I am Pathos. What concepts or directions are you reflecting on today?
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Input Footer Area -->
+    <footer class="max-w-2xl w-full mx-auto p-4 pb-14 z-10">
+        <form id="chat-form" class="relative flex items-center group">
+            <input 
+                type="text" 
+                id="user-input" 
+                placeholder="Share a thought, contradiction, or insight..." 
+                class="w-full bg-zinc-900/40 border border-zinc-800 text-[14px] text-zinc-100 placeholder-zinc-500 rounded-2xl pl-5 pr-14 py-4 shadow-xl transition-all duration-300 focus:outline-none focus:border-zinc-700 focus:bg-zinc-900/80 focus:ring-1 focus:ring-zinc-800"
+                required
+                autocomplete="off"
+            >
+            <button 
+                type="submit" 
+                class="absolute right-3 bg-zinc-100 hover:bg-white text-zinc-950 rounded-xl p-2.5 transition-all duration-300 active:scale-95 flex items-center justify-center cursor-pointer shadow-md hover:shadow-xl hover:shadow-white/5"
+            >
+                <!-- Clean Minimalist Up Arrow -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                </svg>
+            </button>
+        </form>
+        <div class="text-center mt-3 text-[10px] font-mono tracking-widest text-zinc-600 uppercase">
+            Better questions lead to better ideas.
+        </div>
+    </footer>
+
+    <!-- Frontend Logic -->
+    <script>
+        const BACKEND_URL = "https://pathosai.onrender.com";
+        const APP_NAME = "pathos_root";
+        
+        const USER_ID = "user_" + Math.random().toString(36).substring(2, 9);
+        const SESSION_ID = "session_" + Math.random().toString(36).substring(2, 9);
+
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        function appendMessage(text, isUser = false) {
+            const wrapper = document.createElement('div');
+            wrapper.className = isUser ? 'flex items-start justify-end' : 'flex items-start';
+
+            const bubble = document.createElement('div');
+            bubble.className = isUser 
+                ? 'bg-zinc-100 text-zinc-950 px-4 py-3 rounded-2xl rounded-tr-none max-w-[85%] text-[14px] font-medium shadow-md transition-all duration-300'
+                : 'bg-zinc-900/80 border border-zinc-800/80 text-zinc-200 px-4 py-3 rounded-2xl rounded-tl-none max-w-[85%] text-[14px] leading-relaxed shadow-md whitespace-pre-wrap transition-all duration-300';
+            
+            bubble.textContent = text;
+            wrapper.appendChild(bubble);
+            chatBox.appendChild(wrapper);
+            
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            appendMessage(message, true);
+            userInput.value = '';
+
+            const typingWrapper = document.createElement('div');
+            typingWrapper.className = 'flex items-start';
+            const typingBubble = document.createElement('div');
+            typingBubble.className = 'bg-zinc-900/40 border border-zinc-850 text-zinc-500 px-4 py-2.5 rounded-2xl rounded-tl-none text-[12px] font-mono tracking-wide animate-pulse';
+            typingBubble.textContent = 'Pathos is reflecting...';
+            typingWrapper.appendChild(typingBubble);
+            chatBox.appendChild(typingWrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // Fixed execution API block endpoint format
+                const response = await fetch(`${BACKEND_URL}/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        app_name: APP_NAME,
+                        user_id: USER_ID,
+                        session_id: SESSION_ID,
+                        input: message
+                    })
+                });
+
+                if (!response.ok) throw new Error('Network error');
+                
+                const data = await response.json();
+                typingWrapper.remove();
+
+                // Safely grab the response value text string back out
+                const replyText = data.output || data.response || "I processed your request, but the backend returned an unknown payload structure.";
+                appendMessage(replyText, false);
+
+            } catch (error) {
+                console.error(error);
+                typingWrapper.remove();
+                appendMessage("Forgive me, I had trouble connecting to my reflective core. Please verify your connection status.", false);
+            }
+        });
+    </script>
+</body>
+</html>
