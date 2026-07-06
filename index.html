@@ -133,15 +133,14 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // Fixed execution API block endpoint format
-                const response = await fetch(`${BACKEND_URL}/run`, {
+                // Correctly targeting the explicit session turns endpoint
+                const response = await fetch(`${BACKEND_URL}/apps/${APP_NAME}/users/${USER_ID}/sessions/${SESSION_ID}/turns`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        app_name: APP_NAME,
-                        user_id: USER_ID,
-                        session_id: SESSION_ID,
-                        input: message
+                        input: {
+                            text: message
+                        }
                     })
                 });
 
@@ -150,8 +149,8 @@
                 const data = await response.json();
                 typingWrapper.remove();
 
-                // Safely grab the response value text string back out
-                const replyText = data.output || data.response || "I processed your request, but the backend returned an unknown payload structure.";
+                // ADK turns responses typically store output text inside output.text
+                const replyText = data.output?.text || data.output || data.response || "I processed your request, but the backend returned an unexpected payload structure.";
                 appendMessage(replyText, false);
 
             } catch (error) {
