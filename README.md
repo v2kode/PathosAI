@@ -33,9 +33,9 @@ Pathos operates using a pipeline approach that processes ideas before generating
                [ Final Response ]
 ```
 
-1. **Reflection Module (`Modules/reflection.py`):** Unpacks the user statement to identify hidden assumptions, systemic contradictions, emotional undercurrents, and underlying motivations.
-2. **Creativity Module (`Modules/creativity.py`):** Generates structural reframings, inversions, lateral alternatives, and unique constraints for the same input.
-3. **Synthesizer Core (`main.py`):** Blends the outputs from both processing layers into a unified, concise conversational voice that prompts deeper user reflection without prematurely "solving" the problem.
+1. **Reflection Module:** Unpacks the user statement to identify hidden assumptions, systemic contradictions, emotional undercurrents, and underlying motivations.
+2. **Creativity Module:** Generates structural reframings, inversions, lateral alternatives, and unique constraints for the same input.
+3. **Synthesizer Core:** Blends the outputs from both processing layers into a unified, concise conversational voice that prompts deeper user reflection without prematurely "solving" the problem.
 
 ---
 
@@ -53,7 +53,7 @@ Pathos operates using a pipeline approach that processes ideas before generating
 ### 1. Clone & Navigate
 Ensure you are in your project root directory:
 ```bash
-cd C:\Users\vova_\ai-agent-project
+cd C:\Users\your-name\ai-agent-project
 ```
 
 ### 2. Virtual Environment Setup
@@ -92,9 +92,7 @@ To launch the responsive browser-based frontend dashboard locally:
 
 - [x] Establish multi-module cognitive architecture (Reflection + Creativity splits).
 - [x] Migrate to the modern `google-genai` SDK backend to prevent legacy quota throttling.
-- [ ] Implement system configuration rules (`.streamlit/config.toml`) to enforce proper light-theme styling.
-- [ ] Abstract hardcoded API keys out of core files into environment secrets for cloud staging.
-- [ ] Deploy live sandbox environments via Hugging Face Spaces or Streamlit Community Cloud.
+- [ ] Deploy live sandbox environments via Render.
 
 ---
 
