@@ -42,7 +42,7 @@ Pathos operates using a pipeline approach that processes ideas before generating
 ## 🛠️ Tech Stack & Requirements
 
 - **Language:** Python 3.11+
-- **LLM Engine:** Google Gemini (`gemini-2.5-flash`)
+- **LLM Engine:** Google Gemini (`gemini-3.5-flash-lite`) || I am broke and using a free plan.
 - **SDK Library:** Modern `google-genai` SDK
 - **Interface:** Command-Line Interface (CLI) / Streamlit Web Interface (Incoming)
 
