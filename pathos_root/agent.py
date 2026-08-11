@@ -67,14 +67,14 @@ def explore_creative_angles(user_input: str) -> str:
     {user_input}
     """
     response = _client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash-lite",
         contents=prompt,
     )
     return response.text
 
 
 root_agent = Agent(
-    model="gemini-2.5-flash",
+    model="gemini-3.5-flash-lite",
     name="pathos_root",
     description=(
         "An introspective conversational AI that helps users explore, "
