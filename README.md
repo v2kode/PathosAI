@@ -6,7 +6,7 @@ An AI that helps you think instead of doing everything by itself.
 > **Status: ⚠️ Work in Progress (WIP)**  
 > Pathos is currently under active development. Core features, pipeline modularization, and web UI integrations are being actively built and refined.
 
-Pathos is an advanced, multi-module reflective AI agent designed to move past surface-level interactions. Instead of providing immediate, generic answers, Pathos processes user input through parallel cognitive channels—**Deconstructive Reflection** and **Creative Perspective Shifting**—before synthesizing a deeply conscious, natural, and conversational response.
+Pathos is an advanced, multi-module reflective AI agent designed to move past surface-level interactions. Instead of providing immediate, generic answers, Pathos processes user input through parallel cognitive channels - **Deconstructive Reflection** and **Creative Perspective Shifting** - before synthesizing a deeply conscious, natural, and conversational response.
 
 ---
 
@@ -99,7 +99,7 @@ https://pathos-ko6a.onrender.com/
 From here, you should be able to access the AI
 
 ### Important Note
-I do not currently have a constantly active server and Pathos is running from my PC, so it is possible that either the website or the AI itself is not available. It is also possible that it runs out of requests or tokens.
+I do not currently have a constantly active server and Pathos is running on my PC, so it is possible that either the website or the AI itself is not available. It is also possible that it runs out of requests or tokens.
 
 ---
 
