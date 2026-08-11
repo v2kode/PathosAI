@@ -72,7 +72,7 @@ client = genai.Client(api_key="YOUR_SECURE_KEY")
 
 ---
 
-## 🎮 How to Run
+## 🎮 How to Run (Locally)
 
 ### Command Line Interface (CLI)
 To run the primary conversational loop directly in your console terminal:
@@ -88,11 +88,28 @@ To launch the responsive browser-based frontend dashboard locally:
 
 ---
 
+## 🌐 How to Run (Anywhere)
+
+### Browser Access
+Open your browser of choice and paste this link:
+
+```bash
+https://pathos-ko6a.onrender.com/
+```
+From here, you should be able to access the AI
+
+### Important Note
+I do not currently have a constantly active server and Pathos is running from my PC, so it is possible that either the website or the AI itself is not available. It is also possible that it runs out of requests or tokens.
+
+---
+
 ## 📝 Roadmap & Current Tasks
 
 - [x] Establish multi-module cognitive architecture (Reflection + Creativity splits).
 - [x] Migrate to the modern `google-genai` SDK backend to prevent legacy quota throttling.
-- [ ] Deploy live sandbox environments via Render.
+- [x] Deploy live sandbox environments via Render.
+- [ ] Make cosmetic changes so that the user experience is as aesthetically pleasing as possible.
+- [ ] Develop the two next AI models of the Sophos trilogy.
 
 ---
 
