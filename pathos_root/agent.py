@@ -35,7 +35,7 @@ def reflect_on_idea(user_input: str) -> str:
     {user_input}
     """
     response = _client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.5-flash-lite",
         contents=prompt,
     )
     return response.text
