@@ -109,6 +109,7 @@ I do not currently have a constantly active server and Pathos is running on my P
 - [x] Migrate to the modern `google-genai` SDK backend to prevent legacy quota throttling.
 - [x] Deploy live sandbox environments via Render.
 - [ ] Make cosmetic changes so that the user experience is as aesthetically pleasing as possible.
+- [ ] Improve the memory and make Pathos able to recall the moments of dialogue even when it was interrupted
 - [ ] Develop the two next AI models of the Sophos trilogy.
 
 ---
